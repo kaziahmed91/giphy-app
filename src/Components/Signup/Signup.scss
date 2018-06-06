@@ -1,0 +1,36 @@
+.formContainer {
+    
+    // margin-top:  26px;
+    width: 500px;
+    margin: 0 auto;
+    position: relative;
+    top: 100px;
+
+    .formContent {
+        padding:30px;
+    }
+
+    .form {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        
+        .textFields {
+            width:350px;
+            margin:0 auto;
+            margin-bottom:10px;
+        }
+        
+        .button {
+            width:350px;
+            margin:0 auto;
+            
+        }
+    }
+}
+
+body {
+    width: 100%;
+    background-color: aliceblue;
+    height: 100%;
+}
