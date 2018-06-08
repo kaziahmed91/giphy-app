@@ -4,7 +4,8 @@ import ReduxPromise from 'redux-promise';
 import rootReducer from '../Reducers/index';
 import createHistory from 'history/createBrowserHistory';
 import { routerMiddleware } from 'react-router-redux';
-
+import  * as Actions from '../Actions';
+ 
 
 export const history = createHistory();
 
@@ -27,6 +28,8 @@ export function configureStore(initialState) {
       store.replaceReducer(nextRootReducer);
     });
   }
+
+  store.dispatch(Actions.verifyAuth());
 
   return store;
 }

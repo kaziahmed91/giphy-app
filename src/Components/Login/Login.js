@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, SubmissionError } from 'redux-form';
 import classes from './Login.scss';
-// import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
@@ -29,10 +28,16 @@ const validate = values => {
 class Login extends Component {
 
     handleFormSubmit = (values) => {
-        this.props.userSignIn(values);
-        console.log(values);
+        this.props.signInUser(values);
+        if (this.props.authenticationError) {
+            throw new SubmissionError({
+                password: this.props.authenticationError,
+                errors: 'Login failed!'
+            }) 
+        }
     };
 
+    
     render(props) {
         return (
             <div className={classes.formContainer}>
@@ -42,7 +47,6 @@ class Login extends Component {
                     </Typography>
 
                     <form className={classes.form} >
-
                         <label htmlFor="email"></label>
                         <Field name="email"
                             component={TextField}
@@ -62,8 +66,7 @@ class Login extends Component {
                             color="primary"
                             className={classes.button}
                             onClick={this.props.handleSubmit(this.handleFormSubmit)}
-                        >
-                            Login
+                        >Login
                         </Button>
                         <br />
                     </form>
@@ -78,7 +81,13 @@ class Login extends Component {
     }
 }
 
-export default connect(null, Actions)(
+function mapStateToProps(state) {
+    return {
+      authenticationError: state.auth.error
+    }
+}
+
+export default connect(mapStateToProps, Actions)(
     reduxForm({
         form: 'login',
         validate

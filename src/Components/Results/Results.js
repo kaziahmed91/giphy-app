@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import classes from './Results.scss';
 import DetailsModal from '../DetailsModal/DetailsModel';
 import Aux from '../../Hoc/Aux';
+import Typography from '@material-ui/core/Typography';
+import nowShowing from '../../Assets/now-showing.png'
 
 
 class Results extends Component {
@@ -17,19 +19,32 @@ class Results extends Component {
 			threshold: 1.0
 		};
 
+        if(!this.props.gif.length) {
+            this.props.actions.fetchRandomGif();
+        }
+
 		this.observer = new IntersectionObserver(
 			this.handleObserver.bind(this), //callback
 			options
 		);
 
-		this.observer.observe(this.loadingRef);
+        this.observer.observe(this.loadingRef);
 
+        //         // if (this.props.authenticated) {
+        //     this.props.actions.verifyAuth();
+        //     this.props.actions.fetchFavoriteGif();
+        //     console.log(this.props.favorites)
+        // // } else {
+        // //     console.log('not authn')
+        // // }
     }
 
+
+
+    
 	handleObserver(entities, observer) {
 		const y = entities[0].boundingClientRect.y;
 		if (this.props.prevY > y) {
-			console.log('fetching more')
 			this.props.actions.fetchGif(this.props.term, this.props.offset);
 		}
 		this.props.actions.updatePrevY(y);
@@ -38,30 +53,39 @@ class Results extends Component {
     render() {
         const loadingCSS = {
             height: "100px",
-            border: '1px solid',
 			margin: "30px"
 		};
-        // console.log('in results class', this.props);
+        
         const results = this.props.posts.map( (result) => {
           return <Result 
                 key={result.id} 
                 id={result.id}
                 imgUrl={result.images.downsized.url}
                 onClickHandler = {this.props.actions.openModal}
+                
             />
-        }) 
-        
+        })
+
+
+        // console.log(this.props.favorites)
         return (
+            
+            
         <Aux>
             <div className={classes.modalAppStyle}>
                 <DetailsModal                    
                     isModalOpen={this.props.isModalOpen}
                     closeModal={this.props.actions.closeModal}
                 >
-                    <img width="100%" style={{ borderRadius: 3 }} src={this.props.currentlyViewingGif} alt="activeGif" />
+                    <img width="100%" style={{ borderRadius: 3 }} src={this.props.currentlyViewingGif.imgUrl} alt="activeGif" />
                     
-                    {/* <button onClick={this.closeModal}>Close</button> */}
                 </DetailsModal>
+            </div>
+            <div className={classes.header}>
+                <img src={nowShowing} className={classes.nowShowing} alt='nowshowing'></img>
+                <Typography variant="display3" gutterBottom className={classes.headerText}>
+                    {this.props.term ? this.props.term : "Currently Trending..."}
+                </Typography>
             </div>
             <div className={classes.masonry} id="masonry">
                 {results}
@@ -78,7 +102,7 @@ class Results extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log('map state', state)
+    // console.log(state)
 	return {
 		gif: state.gif.data,
 		prevY: state.gif.prevY,
@@ -87,7 +111,9 @@ function mapStateToProps(state) {
         isFetching: state.gif.isFetching,
         offset: state.gif.offset, 
         isModalOpen: state.modal.isModalOpen,
-        currentlyViewingGif : state.modal.currentlyViewingGif
+        currentlyViewingGif : state.modal.currentlyViewingGif,
+        favorites: state.gif.favorites, 
+        authenticated :  state.auth.authenticated
 	};
 }
 

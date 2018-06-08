@@ -1,11 +1,13 @@
 import {
 	START_GIF_SEARCH,
 	END_GIF_SEARCH, 
-	UPDATE_PREV_Y, RESET_STATE, 
+	UPDATE_PREV_Y, RESET_STATE, LIKE_GIF, 
+	FETCH_FAVORITE_GIFS, REORDER_GIF
 } from '../Actions/index';
 
 const initialState = {
 	data: [],
+	favorites: [], 
 	isFetching: false, 
 	term: '',
 	page: 1,
@@ -16,18 +18,14 @@ const initialState = {
 
 
 export default function gifs(state = initialState, action) {
-	// console.log('reducer action', action)
+	
 	switch (action.type) {
 		case START_GIF_SEARCH:
-			console.log('starting search', state)
 			return {
 				...state,
 				isFetching: true
 			}
-			// break;
-
 		case END_GIF_SEARCH:
-			console.log([...state.data, ...action.payload.gif]);
 			return {
 				...state,
 				data:[...state.data, ...action.payload.gif], 
@@ -36,21 +34,42 @@ export default function gifs(state = initialState, action) {
 				page: state.page + 1,
 				offset: (state.page + 1 ) * 25 
 			};
-			// break;
-
+			
 		case UPDATE_PREV_Y: 
-		// console.log('update prevY', state.prevY, action.payload.prevY)
 			return {
 				...state, 
 				prevY: action.payload.prevY
 			}
-			// break;
+
+		case FETCH_FAVORITE_GIFS:
+			let favorites = []
+			
+			for (let i in action.payload ) {
+				if (action.payload.hasOwnProperty(i)) {
+					favorites.push({id : i , img: action.payload[i].url, rating: action.payload[i].rating})
+				}
+			}
+		
+			return {
+				...state, 
+				favorites
+			}
+		
 		case RESET_STATE: 
 			return {
 				...initialState
 			}
-			// break;
 
+		case LIKE_GIF: 
+			return {
+				...state
+			}
+		case REORDER_GIF:
+		// console.log(action.payload.favorites)
+			return {
+				...state,
+			favorites: action.payload.favorites
+			}	
 		default: {
 			return {
 			  ...state

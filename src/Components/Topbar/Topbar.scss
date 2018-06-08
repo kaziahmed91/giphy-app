@@ -3,14 +3,25 @@
     justify-content: space-between;
     align-items:center;
     width:100%;
-    height:80px; 
+    height:150px; 
     background-color: blanchedalmond;
 
     .header {
-        margin-left:20px;
+        margin-left:60px;
+        display: flex;
+        align-items: center;
         font-size:2em;
         text-decoration: none; 
         color:black;
+        .giphyLogo {
+            width:120px;
+            height: 120px;
+        }
+        .headerText {
+            margin-left:20px;
+            color:white;
+
+        }
     }
 
     nav {
@@ -26,7 +37,7 @@
             .navLink {
                 line-height: 30px;
                 font-size: 1.5em;
-                margin: 0 25px 0 15px;
+                margin: 0 10px 0 10px;
                 list-style: none;
                 
                 a{
@@ -39,25 +50,30 @@
     }
 
     .searchBtn {
-        height:80px;
-        width:80px;
-        background-color:lightcyan;
-        display: flex;
+        // height:100px;
+        // width:100px;
+        // border-radius: 50%;
+        // background-color:lightcyan;
+        // display: flex/;
         img {
             align-self: center;
             margin:0 auto;
-            width:50px;
-            height:50px;
-
+            width:30px;
+            height:30px;
+            cursor:pointer;
         }
     }
 }
 
 @media only screen and (max-width: 800px) {
     .topbar {
-        height:60px;
+        height:120px;
         .header {
             font-size: 1.5em;
+            .giphyLogo {
+                width: 80px;
+                height: 80px;
+            }
         }
         
         .navLink a {
@@ -80,6 +96,10 @@
     .topbar {
         .header {
             font-size: 1em;
+            .giphyLogo {
+                width: 60px;
+                height: 60px;
+            }
         }
         
         .navLink a {

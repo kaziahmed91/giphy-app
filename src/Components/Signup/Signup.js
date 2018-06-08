@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, SubmissionError } from 'redux-form';
 import classes from './Signup.scss';
-// import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
@@ -10,45 +9,50 @@ import * as Actions from '../../Actions';
 import { TextField } from 'redux-form-material-ui'
 
 const validate = values => {
-    const errors = {};  
-    
+    const errors = {};
+
     if (!values.email) {
-      errors.email = "Please enter an email.";
+        errors.email = "Please enter an email.";
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-      errors.email = 'Invalid email address'
+        errors.email = 'Invalid email address'
     }
-    if(!values.firstname) {
+    if (!values.firstname) {
         errors.firstname = "Please enter your first name";
-    } else if ( !/[a-zA-Z]+/i.test(values.firstname)) {
+    } else if (!/[a-zA-Z]+/i.test(values.firstname)) {
         errors.firstname = 'Firstname must only contain letters';
     }
-    if(!values.lastname) {
+    if (!values.lastname) {
         errors.lastname = "Please enter your last name"
     } else if (!/[a-zA-Z]+/i.test(values.lastname)) {
         errors.lastname = 'Firstname must only contain letters';
     }
 
     if (!values.password) {
-      errors.password = "Please enter a password.";
+        errors.password = "Please enter a password.";
     }
-  
+
     if (!values.passwordConfirmation) {
-      errors.passwordConfirmation = "Please enter a password confirmation.";
+        errors.passwordConfirmation = "Please enter a password confirmation.";
     }
-  
-    if (values.password !== values.passwordConfirmation ) {
-      errors.password = 'Passwords do not match';
+
+    if (values.password !== values.passwordConfirmation) {
+        errors.password = 'Passwords do not match';
     }
-  
+
     return errors;
-  };
-  
+};
+
 
 class Signup extends Component {
 
     handleFormSubmit = (values) => {
-        this.props.userSignIn(values);
-        console.log(values);
+        this.props.signUpUser(values);
+        if (this.props.authenticationError) {
+            throw new SubmissionError({
+                password: this.props.authenticationError,
+                errors: 'Login failed!'
+            }) 
+        }
     };
 
     render(props) {
@@ -67,7 +71,7 @@ class Signup extends Component {
                             label="First Name"
                             className={classes.textFields}
                             type="text" />
-                        
+
                         <label htmlFor="lastname"></label>
                         <Field name="lastname"
                             component={TextField}
@@ -117,8 +121,15 @@ class Signup extends Component {
     }
 }
 
-export default connect(null, Actions)(
-    reduxForm({
-        form: 'signup',
-        validate
-    })(Signup));
+
+function mapStateToProps(state) {
+    return {
+      authenticationError: state.auth.error
+    }
+}
+
+export default connect(mapStateToProps, Actions)(
+reduxForm({
+    form: 'signup',
+    validate
+})(Signup));

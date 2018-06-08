@@ -3,9 +3,106 @@
     width:100%;
     justify-content: center;
     margin-top:20px;
+
     input {
         width: 300px;
         height:40px;
         border:1px solid;
     }
 }
+
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom:0 ;
+    left: 0;
+    overflow: auto;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    border: #a0a0a0 solid 1px;
+    margin: 0;
+
+    &:before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        margin-right: 0;
+        /* Adjusts for spacing */
+        /* For visualization 
+        background: #808080; width: 5px;
+        */
+      }
+      .centered {
+        display: inline-block;
+        // display: flex;
+        justify-content: center;
+        vertical-align: middle;
+        width: 50%;
+        padding: 10px 15px;
+        color: #FFF;
+        border: none;
+        background: transparent;
+      }
+
+      .searchBox {
+        position: relative;
+        width: 100%;
+        margin: 0;
+
+        .searchField {
+            width:100%;
+        }
+      }
+
+      .closeBtn{
+        position: fixed;
+        width:60px;
+        height:60px;
+        top: 3em;
+        right: 1em;
+        &:hover {
+            cursor: pointer;
+        }
+      } 
+    
+      form {
+        height: 4em;
+        border: 1px solid #999;
+        border-radius: 2px;
+        background-color: #fff;
+        overflow: hidden;
+
+        input {
+            font-size: 14px;
+            color: #ddd;
+            border-width: 0;
+            background: transparent;
+            width: 90%;
+            padding: 20px;
+            color: #333;
+            outline: none;
+            font-size: 1.4em;
+        }
+
+        button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 4.7em;
+            width: 100px;
+            font-size: 14px;
+            color: #fff;
+            text-align: center;
+            line-height: 42px;
+            border-width: 0;
+            background-color: #4d90fe;
+            border-radius: 0 2px 2px 0;
+            cursor: pointer;
+        }
+      }
+
+  }
+  
